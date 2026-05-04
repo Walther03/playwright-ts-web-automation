@@ -1,6 +1,6 @@
 {
     "validUser": {
-        "username": "standard_use",
+        "username": "standard_user",
         "password": "secret_sauce"
     },
     "invalidUser": {
