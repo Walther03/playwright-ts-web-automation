@@ -1,0 +1,13 @@
+{
+  "validBooking": {
+    "firstname": "Walther",
+    "lastname": "QA Portfolio",
+    "totalprice": 250,
+    "depositpaid": true,
+    "bookingdates": {
+      "checkin": "2026-06-01",
+      "checkout": "2026-06-10"
+    },
+    "additionalneeds": "Breakfast"
+  }
+}
