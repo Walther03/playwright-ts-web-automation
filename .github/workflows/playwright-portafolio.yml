@@ -18,18 +18,14 @@ jobs:
       contents: write
       
     steps:
-    # Actualizado a v5/v4 estables compatibles con Node 24
+    # Actualizado a v4 estable compatible con Node 24
     - uses: actions/checkout@v4
     
     - name: Install dependencies
       run: npm ci
 
-    # Eliminamos por completo el paso de "npx playwright install" 
-    # El contenedor ya tiene Chromium listo para usar.
-
-    # Agregamos HOME: /root por si acaso en el futuro decides correr algo más,
-    # aunque para Chromium solo no es estrictamente obligatorio, es buena práctica aquí.
-     Pentest/UI
+    # Corregido: Ahora es un comentario válido en YAML
+    # Pentest/UI
     - name: Run Playwright tests
       env:
         HOME: /root
@@ -43,7 +39,7 @@ jobs:
         path: playwright-report/
         retention-days: 7
 
-    # Actualizado a v4 para que no te tire el Warning de Node 20
+    # Actualizado a v4 para evitar el Warning de Node 20
     - name: Deploy to GitHub Pages
       if: always()
       uses: peaceiris/actions-gh-pages@v4
