@@ -9,29 +9,26 @@ jobs:
   test:
     timeout-minutes: 60
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
+    
+    # Aquí está el truco: usamos el contenedor oficial de Playwright con Node 24
+    container:
+      image: mcr.microsoft.com/playwright:v1.49.0-noble
+
     steps:
-    - uses: actions/checkout@v4
-    - uses: actions/setup-node@v4
-      with:
-        node-version: lts/*
-    - name: Install dependencies
+    - name: Checkout del código
+      uses: actions/checkout@v4
+
+    - name: Instalar dependencias del proyecto
       run: npm ci
-    - name: Install Playwright Browsers
-      run: npx playwright install --with-deps
-    - name: Run Playwright tests
+
+    # Ya NO necesitas el paso de "Install Playwright Browsers" porque vienen incluidos
+    - name: Ejecutar pruebas de Playwright
       run: npx playwright test
-    - name: Upload Report
+
+    - name: Subir Reporte de Resultados
       uses: actions/upload-artifact@v4
-      if: always()
+      if: ${{ !cancelled() }}
       with:
         name: playwright-report
         path: playwright-report/
         retention-days: 30
-    - name: Deploy to GitHub Pages
-      if: always()
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./playwright-report
