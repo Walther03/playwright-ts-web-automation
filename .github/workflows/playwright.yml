@@ -10,7 +10,6 @@ jobs:
     timeout-minutes: 60
     runs-on: ubuntu-latest
     
-    # Aquí está el truco: usamos el contenedor oficial de Playwright con Node 24
     container:
       image: mcr.microsoft.com/playwright:v1.59.1-noble
 
@@ -21,8 +20,10 @@ jobs:
     - name: Instalar dependencias del proyecto
       run: npm ci
 
-    # Ya NO necesitas el paso de "Install Playwright Browsers" porque vienen incluidos
     - name: Ejecutar pruebas de Playwright
+      # Aquí mapeamos la variable para solucionar el bloqueo de Firefox
+      env:
+        HOME: /root
       run: npx playwright test
 
     - name: Subir Reporte de Resultados
