@@ -1,7 +1,7 @@
 name: Playwright Tests - Desde Portafolio
 
 on:
-  # Aislado por completo. Solo despierta cuando presionan el botón verde en tu web
+  # Aislado por completo. Solo despierta cuando presionan el botón en tu portafolio
   repository_dispatch:
     types: [run-playwright-tests]
 
@@ -9,21 +9,32 @@ jobs:
   test:
     timeout-minutes: 15
     runs-on: ubuntu-latest
+    
+    # Usamos el contenedor oficial para evitar descargas y congelamientos
+    container:
+      image: mcr.microsoft.com/playwright:v1.59.1-noble
+
     permissions:
       contents: write
+      
     steps:
+    # Actualizado a v5/v4 estables compatibles con Node 24
     - uses: actions/checkout@v4
-    - uses: actions/setup-node@v4
-      with:
-        node-version: lts/*
+    
     - name: Install dependencies
       run: npm ci
-    - name: Install Playwright Chromium Browser
-      # Descarga optimizada: solo Chromium para evitar colgarse bajando Firefox y Safari
-      run: npx playwright install chromium --with-deps
+
+    # Eliminamos por completo el paso de "npx playwright install" 
+    # El contenedor ya tiene Chromium listo para usar.
+
+    # Agregamos HOME: /root por si acaso en el futuro decides correr algo más,
+    # aunque para Chromium solo no es estrictamente obligatorio, es buena práctica aquí.
+     Pentest/UI
     - name: Run Playwright tests
-      # Ejecución optimizada: corre únicamente tus pruebas de UI en Chrome
+      env:
+        HOME: /root
       run: npx playwright test --project=chromium
+
     - name: Upload Report
       uses: actions/upload-artifact@v4
       if: always()
@@ -31,9 +42,11 @@ jobs:
         name: playwright-report
         path: playwright-report/
         retention-days: 7
+
+    # Actualizado a v4 para que no te tire el Warning de Node 20
     - name: Deploy to GitHub Pages
       if: always()
-      uses: peaceiris/actions-gh-pages@v3
+      uses: peaceiris/actions-gh-pages@v4
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./playwright-report
