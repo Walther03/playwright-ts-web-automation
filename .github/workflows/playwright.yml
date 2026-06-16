@@ -12,7 +12,7 @@ jobs:
     
     # Aquí está el truco: usamos el contenedor oficial de Playwright con Node 24
     container:
-      image: mcr.microsoft.com/playwright:v1.59.0-noble
+      image: mcr.microsoft.com/playwright:v1.59.1-noble
 
     steps:
     - name: Checkout del código
