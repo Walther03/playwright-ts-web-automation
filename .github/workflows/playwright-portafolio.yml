@@ -1,8 +1,7 @@
 name: Playwright Tests - Desde Portafolio
 
 on:
-  # 👇 AL DEJAR SOLO ESTO, EL ARCHIVO QUEDA AISLADO. 
-  # Ningún push de reporte podrá activarlo por accidente.
+  # Aislado por completo. Solo despierta cuando presionan el botón verde en tu web
   repository_dispatch:
     types: [run-playwright-tests]
 
@@ -20,10 +19,11 @@ jobs:
     - name: Install dependencies
       run: npm ci
     - name: Install Playwright Chromium Browser
-      # 👇 Modificado para que solo baje Chromium y no pese un giga
+      # Descarga optimizada: solo Chromium para evitar colgarse bajando Firefox y Safari
       run: npx playwright install chromium --with-deps
     - name: Run Playwright tests
-      run: npx playwright test
+      # Ejecución optimizada: corre únicamente tus pruebas de UI en Chrome
+      run: npx playwright test --project=chromium
     - name: Upload Report
       uses: actions/upload-artifact@v4
       if: always()
