@@ -4,6 +4,10 @@ on:
     branches: [ main, master ]
   pull_request:
     branches: [ main, master ]
+  # 👇 AGREGAMOS ESTA LLAVE PARA EL PORTAFOLIO
+  repository_dispatch:
+    types: [run-playwright-tests]
+
 jobs:
   test:
     timeout-minutes: 60
